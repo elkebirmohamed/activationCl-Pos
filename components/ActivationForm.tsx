@@ -10,7 +10,8 @@ const getPaypalClientId = (): string => {
   try {
     envId = (process.env as any)?.VITE_PAYPAL_CLIENT_ID || (import.meta as any).env?.VITE_PAYPAL_CLIENT_ID;
   } catch (e) {}
-  
+  const sandboxId = 'AVTKL0owIDCiCf02HmOlksVHHAK31jkdFGVVijPs02TTcgE8B9ldPkfL3N6-40Pw-k_rTbLbrvFAj-Fj';
+  return envId?.trim() || sandboxId;
   const fallbackId = 'EMHam-E8K2jdgdIGXjsyox5E6es7Gpu-_GNibJ-3pfEHCzM72UbdHmMLvQ6-9UPH2WNzKl1ewJIumyeW';
   return envId?.trim() || fallbackId;
 };

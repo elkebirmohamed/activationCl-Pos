@@ -6,14 +6,10 @@ import { InputField } from './ui/InputField';
 import { translations } from '../services/translations';
 
 const getPaypalClientId = (): string => {
-  // Accès sécurisé et multi-environnements aux variables
   let envId = '';
   try {
-    // Tente de récupérer la clé depuis process.env ou import.meta.env
     envId = (process.env as any)?.VITE_PAYPAL_CLIENT_ID || (import.meta as any).env?.VITE_PAYPAL_CLIENT_ID;
-  } catch (e) {
-    // Fail-silent pour éviter le crash au démarrage
-  }
+  } catch (e) {}
   
   const fallbackId = 'EMHam-E8K2jdgdIGXjsyox5E6es7Gpu-_GNibJ-3pfEHCzM72UbdHmMLvQ6-9UPH2WNzKl1ewJIumyeW';
   return envId?.trim() || fallbackId;
@@ -106,17 +102,19 @@ export const ActivationForm: React.FC<ActivationFormProps> = ({ onSuccess, lang 
 
   useEffect(() => {
     if (showPaypalButtons && sdkLoaded && (window as any).paypal && paypalContainerRef.current) {
-      // Nettoyage impératif pour éviter les doubles rendus
       paypalContainerRef.current.innerHTML = '';
       
       try {
         const buttons = (window as any).paypal.Buttons({
           style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay', height: 45 },
           createOrder: (data: any, actions: any) => {
+            // MODIFICATION ICI : On envoie MachineID et Email séparés par un pipe |
+            const customData = `${formData.machineId}|${formData.email}`;
+            
             return actions.order.create({
               purchase_units: [{ 
                 description: `POS.AI License - Terminal: ${formData.machineId}`, 
-                custom_id: formData.machineId, 
+                custom_id: customData, 
                 amount: { currency_code: 'EUR', value: '59.90' } 
               }]
             });
@@ -153,7 +151,7 @@ export const ActivationForm: React.FC<ActivationFormProps> = ({ onSuccess, lang 
         setShowPaypalButtons(false); 
       }
     }
-  }, [showPaypalButtons, sdkLoaded, onSuccess, formData.machineId, lang]);
+  }, [showPaypalButtons, sdkLoaded, onSuccess, formData.machineId, formData.email, lang]);
 
   return (
     <div className="space-y-6">

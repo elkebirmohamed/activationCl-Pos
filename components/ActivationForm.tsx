@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, Monitor, Loader2, ShieldCheck, XCircle, CreditCard, RefreshCw, HelpCircle, AlertTriangle, Info } from 'lucide-react';
 import { ActivationFormData, Language } from '../types';
@@ -10,9 +9,9 @@ const getPaypalClientId = (): string => {
   try {
     envId = (process.env as any)?.VITE_PAYPAL_CLIENT_ID || (import.meta as any).env?.VITE_PAYPAL_CLIENT_ID;
   } catch (e) {}
-  const sandboxId = 'AVTKL0owIDCiCf02HmOlksVHHAK31jkdFGVVijPs02TTcgE8B9ldPkfL3N6-40Pw-k_rTbLbrvFAj-Fj';
-  return envId?.trim() || sandboxId;
   
+  const fallbackId = 'EMHam-E8K2jdgdIGXjsyox5E6es7Gpu-_GNibJ-3pfEHCzM72UbdHmMLvQ6-9UPH2WNzKl1ewJIumyeW';
+  return envId?.trim() || fallbackId;
 };
 
 const PAYPAL_CLIENT_ID = getPaypalClientId();
@@ -115,7 +114,7 @@ export const ActivationForm: React.FC<ActivationFormProps> = ({ onSuccess, lang 
               purchase_units: [{ 
                 description: `POS.AI License - Terminal: ${formData.machineId}`, 
                 custom_id: customData, 
-                amount: { currency_code: 'EUR', value: '59.90' } 
+                amount: { currency_code: 'EUR', value: '1.00' } 
               }]
             });
           },
@@ -264,3 +263,5 @@ export const ActivationForm: React.FC<ActivationFormProps> = ({ onSuccess, lang 
     </div>
   );
 };
+
+

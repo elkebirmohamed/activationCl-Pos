@@ -19,9 +19,10 @@ const PAYPAL_CLIENT_ID = getPaypalClientId();
 interface ActivationFormProps {
   onSuccess: () => void;
   lang: Language;
+  amount: string; // <--  LIGNE AJOUTÉE
 }
 
-export const ActivationForm: React.FC<ActivationFormProps> = ({ onSuccess, lang }) => {
+export const ActivationForm: React.FC<ActivationFormProps> = ({ onSuccess, lang, amount }) => {
   const t = translations[lang];
   const [formData, setFormData] = useState<ActivationFormData>({ machineId: '', email: '' });
   const [errors, setErrors] = useState<Partial<ActivationFormData>>({});
@@ -114,7 +115,7 @@ export const ActivationForm: React.FC<ActivationFormProps> = ({ onSuccess, lang 
               purchase_units: [{ 
                 description: `POS.AI License - Terminal: ${formData.machineId}`, 
                 custom_id: customData, 
-                amount: { currency_code: 'EUR', value: '1.00' } 
+                amount: { currency_code: 'EUR', value: amount } // UTILISATION DE amount ICI
               }]
             });
           },

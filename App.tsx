@@ -9,6 +9,9 @@ import { translations } from './services/translations';
 const App: React.FC = () => {
   const [view, setView] = useState<AppView>('FORM');
   const [lang, setLang] = useState<Language>('fr');
+  const queryParams = new URLSearchParams(window.location.search);
+  const priceParam = queryParams.get('price');
+  const amountToPay = priceParam ? priceParam : "59.90";
 
   // Auto-détection de la langue du navigateur
   useEffect(() => {
@@ -57,7 +60,13 @@ const App: React.FC = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white dark:bg-slate-900 py-8 px-4 shadow-xl shadow-slate-200/50 dark:shadow-none sm:rounded-3xl sm:px-10 border border-slate-100 dark:border-slate-800 mx-4 sm:mx-0">
           {view === 'SUCCESS' && <SuccessView onReturn={() => setView('FORM')} lang={lang} />}
-          {view === 'FORM' && <ActivationForm onSuccess={() => setView('SUCCESS')} lang={lang} />}
+         {view === 'FORM' && (
+      <ActivationForm 
+        onSuccess={() => setView('SUCCESS')} 
+        lang={lang} 
+        amount={amountToPay} // <--- ON ENVOIE LE PRIX AU FORMULAIRE
+      />
+    )}
           {view === 'ADMIN' && <AdminDashboard onBack={() => setView('FORM')} />}
         </div>
         

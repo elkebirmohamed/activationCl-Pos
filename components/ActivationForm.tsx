@@ -226,7 +226,7 @@ export const ActivationForm: React.FC<ActivationFormProps> = ({ onSuccess, lang,
                 isSyncing ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
               }`}
             >
-              {isSyncing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t.btnTesting}</> : <><CreditCard className="mr-2 h-4 w-4" />{t.btnActivate}</>}
+              {isSyncing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t.btnTesting}</> : <><CreditCard className="mr-2 h-4 w-4" />{t.btnActivate} ({amount}€)</>}
             </button>
           </form>
         </div>
